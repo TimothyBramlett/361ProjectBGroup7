@@ -1,11 +1,8 @@
 # imports the flask library
 import flask
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
 from json import dumps
-
-#Create a engine for connecting to SQLite3.
-e = create_engine('sqlite:///grocery_upc.sql3')
+import sqlite3
 
 # instantiates a Flask object named app
 # passing in the special variable __name__
@@ -29,20 +26,40 @@ def index():
 def print_message(message):
     return 'You sent the message: {}'.format(message) # only sends back raw text (no HTML)
     
-  
-  
-# https://projectbgroup7dev-timbram.c9users.io/grocery_upc_list  
-class Products(Resource):
+
+
+db_name = 'project.sql3'
+
+# add one business to the database in table 'businesses'
+# https://projectbgroup7dev-timbram.c9users.io/bus_register
+# takes 5 key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
+# keys are 'name', 'addr', 'city', 'state', 'zip'
+class RegBusiness(Resource):
+    def post(self):
+        cnxn = sqlite3.connect(db_name)
+        name = flask.request.form['name']
+        addr = flask.request.form['addr']
+        city = flask.request.form['city']
+        state = flask.request.form['state']
+        zip = flask.request.form['zip']
+        cnxn.execute('INSERT INTO businesses (name, addr, city, state, zip) VALUES (?,?,?,?,?)', (name, addr, city, state, zip))
+        cnxn.commit()
+        return 'success!'
+        cnxn.close()
+api.add_resource(RegBusiness, '/bus_register')
+
+# return list of business in database table 'businesses'
+# https://projectbgroup7dev-timbram.c9users.io/bus_list
+# takes no parameters
+class ListBusiness(Resource):     
     def get(self):
-        #Connect to databse
-        conn = e.connect()
-        #Perform query and return JSON data
-        query = conn.execute("SELECT * FROM grocery_upc_list")
-        return {'grocery_upc_list': [i for i in query.cursor.fetchall()]}
-
-api.add_resource(Products, '/grocery_upc_list')
-
-
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT * FROM businesses ORDER BY zip')
+        retVal = crsr.fetchall()
+        cnxn.close()
+        return retVal 
+api.add_resource(ListBusiness, '/bus_list')
 
 if __name__ == '__main__':
     # This is a special convention in python that causes the app.run function
