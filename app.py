@@ -3,6 +3,7 @@ import flask
 from flask_restful import Resource, Api
 from json import dumps
 import sqlite3
+import sys
 
 # instantiates a Flask object named app
 # passing in the special variable __name__
@@ -64,7 +65,10 @@ api.add_resource(ListBusiness, '/bus_list')
 if __name__ == '__main__':
     # This is a special convention in python that causes the app.run function
     # to only be executed if this file is being run directly
-    app.run(host='0.0.0.0', debug=False, port=8080)
+    
+    run_port = int(sys.argv[1]) # The second argument being passed to the script by the os
+                                # filename is first
+    app.run(host='0.0.0.0', debug=False, port=run_port)
     # with cloud9 we have to run the app on port 8080
 
 
