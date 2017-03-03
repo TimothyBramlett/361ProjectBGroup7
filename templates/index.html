@@ -5,7 +5,7 @@
   <meta charset="utf-8">
 
   <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
+  <meta name="description" content="Excess Food Network">
   <meta name="author" content="SitePoint">
 
   <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
@@ -15,9 +15,58 @@
   <![endif]-->
 </head>
 
-<body>
-  <h1>Hello World!</h1>
+<!--https://www.w3schools.com/html/html_forms.asp-->
 
+<body>
+  <h1>Registration</h1>
+  
+   <!--name text, addr text, city text, state text, zip text-->
+  
+  <form action="https://projectbgroup7dev-timbram.c9users.io/bus_register" method ="POST" enctype="multipart/form-data">
+    Business name:<br>
+    <input type="text" name="name" placeholder="Your Company Name"><br>
+    
+    Address:<br>
+    <input type="text" name="addr" placeholder="12771 Beech Tree Lane"><br>
+    
+    City:<br>
+    <input type="text" name="city" placeholder="San Jose"><br>
+    
+    State:<br>
+    <input type="text" name="state" placeholder="CA"><br>
+    
+    Zip:<br>
+    <input type="text" name="zip" placeholder="76040"><br>
+    
+    
+    <input type="submit" value="Submit">
+  </form>
+  
+  <!--(name text, addr text, city text, state text, zip text, famsize int)-->
+  <form action="https://projectbgroup7dev-timbram.c9users.io/bus_register" method ="POST" enctype="multipart/form-data">
+    Business name:<br>
+    <input type="text" name="name" placeholder="Your Company Name"><br>
+    
+    Address:<br>
+    <input type="text" name="addr" placeholder="12771 Beech Tree Lane"><br>
+    
+    City:<br>
+    <input type="text" name="city" placeholder="San Jose"><br>
+    
+    State:<br>
+    <input type="text" name="state" placeholder="CA"><br>
+    
+    Zip:<br>
+    <input type="text" name="zip" placeholder="76040"><br>
+    
+    Family Size:<br>
+    <input type="text" name="famsize" placeholder="0"><br>
+    
+    <input type="submit" value="Submit">
+  </form>
+	  
+	  
+	  
 	  
 </body>
 </html>
