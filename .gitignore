@@ -1,6 +1,8 @@
 # virtual environments
 venv*
 
+# Sqlite Files
+*sql3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
