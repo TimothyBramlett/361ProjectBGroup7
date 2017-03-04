@@ -26,8 +26,10 @@ def request_list_of_businesses():
     print('    ' + req_string)
     print('RESPONSE:')
     response = requests.get(req_string)
-    print ('    ' + str(response))
-    print ('    ' + response.text)
+    print(response.json())
+    print(len(response.json()))
+#    print ('    ' + str(response))
+#    print ('    ' + response.text)
     return;
 
 def request_list_of_businesses_with_passwords():
@@ -68,7 +70,10 @@ def register_business(name, addr, city, state, zip, username, password, confirm_
 request_list_of_businesses()
 request_list_of_businesses_with_passwords()
 
-register_business('Cash\'s Other Business', '1234 The Other Side', 'Nowhere', 'AZ', '87345', 'B-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Bar', '12000 SE Petrovitsky Rd', 'Renton', 'WA', '98058', 'A-money', 'asdf1234', 'asdf1234')
+register_business('Cash\'s Grill', '3040 118th Ave SE', 'Bellevue', 'WA', '98005', 'B-money', '56hjkl78', '56hjkl78')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
 request_list_of_businesses()
+request_list_of_businesses_with_passwords()
 
 

@@ -48,20 +48,43 @@ db_name = 'project.sql3'
 
 # add one business to the database in table 'businesses'
 # https://projectbgroup7dev-timbram.c9users.io/bus_register
-# takes 5 key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
-# keys are 'name', 'addr', 'city', 'state', 'zip'
+# takes key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
 class RegBusiness(Resource):
     def post(self):
         cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+
         name = flask.request.form['name']
         addr = flask.request.form['addr']
         city = flask.request.form['city']
         state = flask.request.form['state']
         zip = flask.request.form['zip']
-        cnxn.execute('INSERT INTO businesses (name, addr, city, state, zip) VALUES (?,?,?,?,?)', (name, addr, city, state, zip))
+        if (len(name) == 0 or len(addr) == 0 or len(city) == 0 or len(state) == 0 or len(zip) == 0):
+            cnxn.close()
+            return 'noblanksallowed'
+            
+        user = flask.request.form['username']
+        opas = flask.request.form['password']
+        cpas = flask.request.form['confirm_password']
+        if (len(user) == 0 or len(opas) == 0 or len(cpas) == 0):
+            cnxn.close()
+            return 'noblanksallowed'
+        if (opas != cpas):
+            cnxn.close()
+            return 'passmismatch'
+            
+        crsr.execute('SELECT * FROM businesses WHERE username=?', (user,))
+        result = crsr.fetchall()
+        if len(result) > 0:
+            cnxn.close()
+            return 'usertaken'
+    
+        # shouldn't store or even send passwords as plain text but probably okay for this assignment
+        cnxn.execute('INSERT INTO businesses (name, addr, city, state, zip, username, password) VALUES (?,?,?,?,?,?,?)',
+            (name, addr, city, state, zip, user, opas))
         cnxn.commit()
-        return 'success!'
         cnxn.close()
+        return 'success!'
 api.add_resource(RegBusiness, '/bus_register')
 
 # return list of business in database table 'businesses'
@@ -71,11 +94,24 @@ class ListBusiness(Resource):
     def get(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
-        crsr.execute('SELECT * FROM businesses ORDER BY zip')
-        retVal = crsr.fetchall()
+        crsr.execute('SELECT name,addr,city,state,zip,username FROM businesses')
+        result = crsr.fetchall()
         cnxn.close()
-        return retVal 
+        return dumps(result)
 api.add_resource(ListBusiness, '/bus_list')
+
+# return list of business in database table 'businesses' (INCLUDING PASSWORDS)
+# https://projectbgroup7dev-timbram.c9users.io/bus_list
+# takes no parameters
+class ListBusinessFull(Resource):     
+    def get(self):
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT * FROM businesses')
+        result = crsr.fetchall()
+        cnxn.close()
+        return dumps(result)
+api.add_resource(ListBusinessFull, '/bus_list_with_pass')
 
 if __name__ == '__main__':
     # This is a special convention in python that causes the app.run function

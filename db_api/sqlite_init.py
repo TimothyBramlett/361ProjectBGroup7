@@ -46,10 +46,13 @@ if os.path.exists(db_name):
 cnxn = sqlite3.connect(db_name)
 crsr = cnxn.cursor()
 
+
 crsr.execute('''CREATE TABLE businesses 
-    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, password text)''')
-crsr.execute('''CREATE TABLE users 
-    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, famsize int, password text)''')
+    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, username text, password text)''')
+crsr.execute('''CREATE TABLE users
+    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, famsize int, username text, password text)''')
+crsr.execute('''CREATE TABLE f_loss 
+    (id INTEGER NOT NULL PRIMARY KEY, name text, units text, amount integer, bus_id integer, FOREIGN KEY (bus_id) REFERENCES businesses(id))''')
 
 
 # close the connection to the database
