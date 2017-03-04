@@ -47,9 +47,9 @@ cnxn = sqlite3.connect(db_name)
 crsr = cnxn.cursor()
 
 crsr.execute('''CREATE TABLE businesses 
-    (id int, name text, addr text, city text, state text, zip text)''')
+    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, password text)''')
 crsr.execute('''CREATE TABLE users 
-    (id int, name text, addr text, city text, state text, zip text, famsize int)''')
+    (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, famsize int, password text)''')
 
 
 # close the connection to the database
