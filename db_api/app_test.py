@@ -25,10 +25,10 @@ def generic_get_request(request):
     print('    ' + req_string)
     print('RESPONSE:')
     response = requests.get(req_string)
-    print (response)
+    print('    ' + str(response))
     response = response.json()
     for each_record in response:
-        print(each_record)
+        print('    ' + str(each_record))
     print('\r') #formatting only
     return;
 
