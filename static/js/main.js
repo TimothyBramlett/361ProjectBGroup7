@@ -8,13 +8,15 @@ $( document ).ready(function() {
         var request_method = $(this).attr("method");
         //Encode form elements for submission
         var form_data = $(this).serialize();
+        //
+        var originURL = location.origin;
 
         $.ajax({
             url : post_url,
             type: request_method,
             data : form_data
         }).done(function(response) {
-            window.location.replace("https://projectbgroup7dev-timbram.c9users.io:8081/login");
+            window.location.replace(originURL.concat("/login"));
         }).fail(function(response) {
             $("#messages").html('<p>response</p>');
         });
