@@ -12,7 +12,9 @@ app = flask.Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
 api = Api(app)
+db_name = 'project.sql3'
 
+#-------------------------------------------------------------------------------
 # default route
 # test it out by visting: https://projectbgroup7dev-timbram.c9users.io/
 # creates the default route of the web application
@@ -21,6 +23,7 @@ def index():
     return flask.render_template('index.html')
     # renders the 'index.html' file stored in the templates directory
 
+#-------------------------------------------------------------------------------
 # registration route
 # test it out by visting: https://projectbgroup7dev-timbram.c9users.io:8081/registration
 # creates the registration route of the web application
@@ -29,6 +32,7 @@ def registration():
     return flask.render_template('registration.html')
     # renders the 'registration.html' file stored in the templates directory
 
+#-------------------------------------------------------------------------------
 # login route
 # test it out by visting: https://projectbgroup7dev-timbram.c9users.io:8081/login
 # creates the login route of the web application
@@ -37,15 +41,13 @@ def login():
     return flask.render_template('login.html')
     # renders the 'login.html' file stored in the templates directory
 
+#-------------------------------------------------------------------------------
 # test it out by visting:  https://projectbgroup7dev-timbram.c9users.io/print_message/hello    
 @app.route('/print_message/<message>')
 def print_message(message):
     return 'You sent the message: {}'.format(message) # only sends back raw text (no HTML)
     
-
-
-db_name = 'project.sql3'
-
+#-------------------------------------------------------------------------------
 # add one business to the database in table 'businesses'
 # https://projectbgroup7dev-timbram.c9users.io/bus_register
 # takes key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
@@ -61,32 +63,33 @@ class RegBusiness(Resource):
         zip = flask.request.form['zip']
         if (len(name) == 0 or len(addr) == 0 or len(city) == 0 or len(state) == 0 or len(zip) == 0):
             cnxn.close()
-            return 'noblanksallowed'
+            return 'noblanksallowed', 400
             
         user = flask.request.form['username']
         opas = flask.request.form['password']
         cpas = flask.request.form['confirm_password']
         if (len(user) == 0 or len(opas) == 0 or len(cpas) == 0):
             cnxn.close()
-            return 'noblanksallowed'
+            return 'noblanksallowed', 400
         if (opas != cpas):
             cnxn.close()
-            return 'passmismatch'
+            return 'passmismatch', 409
             
         crsr.execute('SELECT * FROM businesses WHERE username=?', (user,))
         result = crsr.fetchall()
         if len(result) > 0:
             cnxn.close()
-            return 'usertaken'
+            return 'usertaken', 409
     
         # shouldn't store or even send passwords as plain text but probably okay for this assignment
         cnxn.execute('INSERT INTO businesses (name, addr, city, state, zip, username, password) VALUES (?,?,?,?,?,?,?)',
             (name, addr, city, state, zip, user, opas))
         cnxn.commit()
         cnxn.close()
-        return 'success!'
+        return 'success!', 200
 api.add_resource(RegBusiness, '/bus_register')
 
+#-------------------------------------------------------------------------------
 # return list of business in database table 'businesses'
 # https://projectbgroup7dev-timbram.c9users.io/bus_list
 # takes no parameters
@@ -97,9 +100,10 @@ class ListBusiness(Resource):
         crsr.execute('SELECT name,addr,city,state,zip,username FROM businesses')
         result = crsr.fetchall()
         cnxn.close()
-        return result
+        return result, 200
 api.add_resource(ListBusiness, '/bus_list')
 
+#-------------------------------------------------------------------------------
 # return list of business in database table 'businesses' (INCLUDING PASSWORDS)
 # https://projectbgroup7dev-timbram.c9users.io/bus_list
 # takes no parameters
@@ -110,9 +114,10 @@ class ListBusinessFull(Resource):
         crsr.execute('SELECT * FROM businesses')
         result = crsr.fetchall()
         cnxn.close()
-        return result
+        return result, 200
 api.add_resource(ListBusinessFull, '/bus_list_with_pass')
 
+#-------------------------------------------------------------------------------
 if __name__ == '__main__':
     # This is a special convention in python that causes the app.run function
     # to only be executed if this file is being run directly
