@@ -18,31 +18,27 @@ port = 8080
 # NOTE
 # function definitions for tests start here
 # NOTE
-def request_list_of_businesses():
-    request = 'bus_list'
+def generic_get_request(request):
     req_string = url + ':' + str(port) + '/' + request
     print('----------------------------------------------------------------')
     print('REQUEST:')
     print('    ' + req_string)
     print('RESPONSE:')
     response = requests.get(req_string)
-    print(response.json())
-    print(len(response.json()))
-#    print ('    ' + str(response))
-#    print ('    ' + response.text)
+    print (response)
+    response = response.json()
+    for each_record in response:
+        print(each_record)
+    print('\r') #formatting only
     return;
+
+def request_list_of_businesses():
+    request = 'bus_list'
+    generic_get_request(request)
 
 def request_list_of_businesses_with_passwords():
     request = 'bus_list_with_pass'
-    req_string = url + ':' + str(port) + '/' + request
-    print('----------------------------------------------------------------')
-    print('REQUEST:')
-    print('    ' + req_string)
-    print('RESPONSE:')
-    response = requests.get(req_string)
-    print ('    ' + str(response))
-    print ('    ' + response.text)
-    return;
+    generic_get_request(request)
 
 def register_business(name, addr, city, state, zip, username, password, confirm_password):
     request = 'bus_register'
@@ -58,6 +54,8 @@ def register_business(name, addr, city, state, zip, username, password, confirm_
     print('----------------------------------------------------------------')
     print('REQUEST:')
     print('    ' + req_string)
+    print('POST DATA:')
+    print('    ' + str(post_data))
     print('RESPONSE:')
     response = requests.post(req_string, post_data)
     print ('    ' + str(response))
@@ -75,5 +73,15 @@ register_business('Cash\'s Grill', '3040 118th Ave SE', 'Bellevue', 'WA', '98005
 register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
 request_list_of_businesses()
 request_list_of_businesses_with_passwords()
+
+register_business('', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', '', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', '', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', '', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', '', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', '')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'mismatch')
 
 

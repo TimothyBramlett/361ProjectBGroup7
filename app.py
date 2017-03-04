@@ -97,7 +97,7 @@ class ListBusiness(Resource):
         crsr.execute('SELECT name,addr,city,state,zip,username FROM businesses')
         result = crsr.fetchall()
         cnxn.close()
-        return dumps(result)
+        return result
 api.add_resource(ListBusiness, '/bus_list')
 
 # return list of business in database table 'businesses' (INCLUDING PASSWORDS)
@@ -110,7 +110,7 @@ class ListBusinessFull(Resource):
         crsr.execute('SELECT * FROM businesses')
         result = crsr.fetchall()
         cnxn.close()
-        return dumps(result)
+        return result
 api.add_resource(ListBusinessFull, '/bus_list_with_pass')
 
 if __name__ == '__main__':
