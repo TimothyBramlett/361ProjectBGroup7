@@ -21,6 +21,21 @@ def index():
     return flask.render_template('index.html')
     # renders the 'index.html' file stored in the templates directory
 
+# registration route
+# test it out by visting: https://projectbgroup7dev-timbram.c9users.io:8081/registration
+# creates the registration route of the web application
+@app.route('/registration', methods=['GET', 'POST']) # The acceptable HTTP methods for this
+def registration():
+    return flask.render_template('registration.html')
+    # renders the 'registration.html' file stored in the templates directory
+
+# login route
+# test it out by visting: https://projectbgroup7dev-timbram.c9users.io:8081/login
+# creates the login route of the web application
+@app.route('/login', methods=['GET', 'POST']) # The acceptable HTTP methods for this
+def login():
+    return flask.render_template('login.html')
+    # renders the 'login.html' file stored in the templates directory
 
 # test it out by visting:  https://projectbgroup7dev-timbram.c9users.io/print_message/hello    
 @app.route('/print_message/<message>')
