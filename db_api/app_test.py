@@ -71,6 +71,7 @@ request_list_of_businesses_with_passwords()
 register_business('Cash\'s Bar', '12000 SE Petrovitsky Rd', 'Renton', 'WA', '98058', 'A-money', 'asdf1234', 'asdf1234')
 register_business('Cash\'s Grill', '3040 118th Ave SE', 'Bellevue', 'WA', '98005', 'B-money', '56hjkl78', '56hjkl78')
 register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
+register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'qwerty9876')
 request_list_of_businesses()
 request_list_of_businesses_with_passwords()
 
