@@ -39,10 +39,43 @@ def registration():
 @app.route('/login', methods=['GET', 'POST']) # The acceptable HTTP methods for this
 def login():
     if flask.request.method == 'POST':
-        temp = 0
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        user = flask.request.form['username']
+        pwd = flask.request.form['password']
+        crsr.execute('SELECT password FROM businesses WHERE username=?', (user,))
+        result = crsr.fetchone()
+        cnxn.close()
+        
+        if result is not None and result[0] == pwd:
+            flask.session['username'] = user
+            flask.flash('You were successfully logged in')
+            return flask.redirect(flask.url_for('index'))
+        else:
+            flask.flash('Login Failed')
+            return flask.redirect(flask.url_for('login'))
+        
+       
+        # fall through indicates login failed 
+        # return 'failed login'
     else:
-        return flask.render_template('login.html')
+        # GET Request, first check if the user is logged in already, redirect to index if so.
+        # if not logged in then display the login form
+        if 'username' in flask.session:
+            flask.flash('You were already logged in')
+            return flask.redirect(flask.url_for('index'))
+        else:
+            return flask.render_template('login.html')
     # renders the 'login.html' file stored in the templates directory
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    flask.session.pop('username', None)
+    flask.session.pop('userid', None)
+    flask.flash('You were successfully logged out')
+    return flask.redirect(flask.url_for('index'))
+
 
 #-------------------------------------------------------------------------------
 # test it out by visting:  https://projectbgroup7dev-timbram.c9users.io/print_message/hello    
