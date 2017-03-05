@@ -32,18 +32,20 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Project name</a>
+        <a class="navbar-brand" href="#">Food For All</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
         <ul class="nav navbar-nav">
-          <li {% if 'index' == active_page %} class="active"{% endif%}><a href="https://projectbgroup7dev-timbram.c9users.io:8081/">Home</a></li>
-          <li {% if 'registration' == active_page %} class="active"{% endif%}><a href="https://projectbgroup7dev-timbram.c9users.io:8081/registration">Registration</a></li>
-          <li {% if 'login' == active_page %} class="active"{% endif%}><a href="https://projectbgroup7dev-timbram.c9users.io:8081/login">Login</a></li>
+          <li {% if 'index' == active_page %} class="active"{% endif%}><a href="{{ url_for('index') }}">Home</a></li>
+          <li {% if 'registration' == active_page %} class="active"{% endif%}><a href="{{ url_for('registration') }}">Registration</a></li>
+          <li {% if 'login' == active_page %} class="active"{% endif%}><a href="{{ url_for('login') }}">Login</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
   </nav>
-  <div id="messages"></div>
+  <div class="container">
+    <div id="messages"></div>  
+  </div>
   {% block container %}{% endblock %}
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

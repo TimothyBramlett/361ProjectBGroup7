@@ -1,0 +1,52 @@
+{% extends 'base.html' %} 
+<!--  We should probably have this accessable after business login -->
+{% set active_page = 'food_loss' %}
+
+{% block container %}
+  <div class="container">
+    <h1>Food Loss Reporting</h1>
+    <form id="food_loss" action="https://projectbgroup7dev-timbram.c9users.io:8081/f_loss" method ="POST" enctype="x-www-form-urlencoded">
+
+      <div class="form-group">
+        <label for="name">Food Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="Enter Food Name">
+      </div>
+
+<!-- UPC codes could be used to access exact item information in more comprehensive implementation
+      <div class="form-group">
+        <label for="upc">UPC:</label>
+        <input type="text" class="form-control" name="upc" placeholder="Enter UPC">
+      </div> -->
+
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="int" class="form-control"  name="amount" placeholder="1">
+      </div>
+
+<!--      <div class="form-group">
+        <label for="units">Units:</label>
+        <input type="text" class="form-control"  name="units" placeholder="oz">
+      </div> -->
+      
+      <div class="form-group">
+        <label for="units">Units:</label>
+        <select class="form-control" name="units">
+          <option value="oz">oz</option>
+          <option value="lbs">lbs</option>
+          <option value="pints">pints</option>
+          <option value="quarts">quarts</option>
+          <option value="gallons">gallons</option>
+          <option value="boxes">boxes</option>
+          <option value="cans">cans</option>
+          <option value="jars">jars</option>
+          <option value="bags">bags</option>
+        </select>
+      </div>
+
+
+      <button id="register_button" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  
+
+{% endblock %}
