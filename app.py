@@ -32,7 +32,7 @@ def registration():
     # GET Request, first check if the user is logged in already, redirect to console if so.
     # if not logged in then display the login form
     if 'username' in flask.session:
-        flask.flash('You were already logged in')
+        #flask.flash('You were already logged in')
         if flask.session['usertype'] == 'bus':
             return flask.redirect(flask.url_for('bus_console'))
         elif flask.session['usertype'] == 'ben':
@@ -60,7 +60,7 @@ def login():
             cnxn.close()
             flask.session['username'] = user
             flask.session['usertype'] = 'bus'
-            flask.flash('You were successfully logged in')
+            #flask.flash('You were successfully logged in')
             return flask.redirect(flask.url_for('bus_console'))
 
         # check if beneficiary
@@ -70,7 +70,7 @@ def login():
             cnxn.close()
             flask.session['username'] = user
             flask.session['usertype'] = 'ben'
-            flask.flash('You were successfully logged in')
+            #flask.flash('You were successfully logged in')
             return flask.redirect(flask.url_for('ben_console'))
 
         cnxn.close()
@@ -82,7 +82,7 @@ def login():
         # GET Request, first check if the user is logged in already, redirect to console if so.
         # if not logged in then display the login form
         if 'username' in flask.session:
-            flask.flash('You were already logged in')
+            #flask.flash('You were already logged in')
             if flask.session['usertype'] == 'bus':
                 return flask.redirect(flask.url_for('bus_console'))
             elif flask.session['usertype'] == 'ben':
@@ -99,7 +99,7 @@ def logout():
     flask.session.pop('username', None)
     flask.session.pop('userid', None)
     flask.session.pop('usertype', None)
-    flask.flash('You were successfully logged out')
+    #flask.flash('You were successfully logged out')
     return flask.redirect(flask.url_for('index'))
 
 #-------------------------------------------------------------------------------

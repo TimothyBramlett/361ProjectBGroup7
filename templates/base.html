@@ -36,12 +36,15 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
         <ul class="nav navbar-nav">
-          <li {% if 'index' == active_page %} class="active"{% endif%}><a href="{{ url_for('index') }}">Home</a></li>
-          <li {% if 'registration' == active_page %} class="active"{% endif%}><a href="{{ url_for('registration') }}">Registration</a></li>
-          <li {% if 'login' == active_page %} class="active"{% endif%}><a href="{{ url_for('login') }}">Login</a></li>
-          <li {% if 'bus_console' == active_page %} class="active"{% endif%}><a href="{{ url_for('bus_console') }}">Console</a></li>
-          <li {% if 'ben_console' == active_page %} class="active"{% endif%}><a href="{{ url_for('ben_console') }}">Console</a></li>
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          <li id="index" {% if 'index' == active_page %} class="active"{% endif%}><a href="{{ url_for('index') }}">Home</a></li>
+          <li id="registration" {% if 'registration' == active_page %} class="active"{% endif%} {% if 'usertype' in session %} class="hidden"{% endif%}><a href="{{ url_for('registration') }}">Registration</a></li>
+          <li id="login" {% if 'login' == active_page %} class="active"{% endif%} {% if 'usertype' in session %} class="hidden"{% endif%}><a href="{{ url_for('login') }}">Login</a></li>
+          <li id="bus_console" {% if 'bus_console' == active_page %} class="active"{% endif%} {% if not 'usertype' in session %} class="hidden" {% elif session['usertype'] == 'ben' %} class="hidden" {% endif%}><a href="{{ url_for('bus_console') }}">Console</a></li>
+          <li id="ben_console" {% if 'ben_console' == active_page %} class="active"{% endif%} {% if not 'usertype' in session %} class="hidden" {% elif session['usertype'] == 'bus' %} class="hidden" {% endif%}><a href="{{ url_for('ben_console') }}">Console</a></li>
+          <!--<li id="logout" {% if not 'usertype' in session %} class="hidden"{% endif%}><a href="{{ url_for('logout') }}">Logout</a></li>-->
+          {% if 'usertype' in session %}
+            <li id="logout"><a href="{{ url_for('logout') }}">Logout ({{session['username']}})</a></li>
+          {% endif%}
         </ul>
       </div><!--/.nav-collapse -->
     </div>
