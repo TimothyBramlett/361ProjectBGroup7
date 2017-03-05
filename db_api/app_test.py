@@ -40,6 +40,14 @@ def request_list_of_businesses_with_passwords():
     request = 'bus_list_with_pass'
     generic_get_request(request)
 
+def request_list_of_beneficiaries():
+    request = 'ben_list'
+    generic_get_request(request)
+
+def request_list_of_beneficiaries_with_passwords():
+    request = 'ben_list_with_pass'
+    generic_get_request(request)
+
 def register_business(name, addr, city, state, zip, username, password, confirm_password):
     request = 'bus_register'
     req_string = url + ':' + str(port) + '/' + request
@@ -48,6 +56,30 @@ def register_business(name, addr, city, state, zip, username, password, confirm_
         'city': city,
         'state': state,
         'zip': zip,
+        'username': username,
+        'password': password,
+        'confirm_password': confirm_password}
+    print('----------------------------------------------------------------')
+    print('REQUEST:')
+    print('    ' + req_string)
+    print('POST DATA:')
+    print('    ' + str(post_data))
+    print('RESPONSE:')
+    response = requests.post(req_string, post_data)
+    print ('    ' + str(response))
+    print ('    ' + response.text)
+    return;
+
+def register_beneficiary(first, last, addr, city, state, zip, famsize, username, password, confirm_password):
+    request = 'ben_register'
+    req_string = url + ':' + str(port) + '/' + request
+    post_data = {'first': first,
+        'last': last,
+        'addr': addr,
+        'city': city,
+        'state': state,
+        'zip': zip,
+        'famsize': famsize,
         'username': username,
         'password': password,
         'confirm_password': confirm_password}
@@ -85,4 +117,11 @@ register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-
 register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', '')
 register_business('Cash\'s Pub', '200 Roy Street', 'Seattle', 'WA', '98109', 'C-money', 'qwerty9876', 'mismatch')
 
+request_list_of_beneficiaries()
+request_list_of_beneficiaries_with_passwords()
 
+register_beneficiary('Cash', 'Stramel', '1234 Street Name', 'Seattle', 'WA', '98012', 4, 'pokemon', 'go', 'go')
+register_beneficiary('Jeff', 'Mueller', '1234 Street Name', 'Brisbane', 'AUS', '45673', 2, 'godzilla', 'go', 'go')
+
+request_list_of_beneficiaries()
+request_list_of_beneficiaries_with_passwords()
