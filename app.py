@@ -18,7 +18,7 @@ db_name = 'project.sql3'
 # default route
 # test it out by visting: https://projectbgroup7dev-timbram.c9users.io/
 # creates the default route of the web application
-@app.route('/', methods=['GET', 'POST']) # The acceptable HTTP methods for this
+@app.route('/', methods=['GET']) # The acceptable HTTP methods for this
 def index():
     return flask.render_template('index.html')
     # renders the 'index.html' file stored in the templates directory
@@ -27,8 +27,17 @@ def index():
 # registration route
 # test it out by visting: https://projectbgroup7dev-timbram.c9users.io:8081/registration
 # creates the registration route of the web application
-@app.route('/registration', methods=['GET', 'POST']) # The acceptable HTTP methods for this
+@app.route('/registration', methods=['GET']) # The acceptable HTTP methods for this
 def registration():
+    # GET Request, first check if the user is logged in already, redirect to console if so.
+    # if not logged in then display the login form
+    if 'username' in flask.session:
+        flask.flash('You were already logged in')
+        if flask.session['usertype'] == 'bus':
+            return flask.redirect(flask.url_for('bus_console'))
+        elif flask.session['usertype'] == 'ben':
+            return flask.redirect(flask.url_for('ben_console'))
+
     return flask.render_template('registration.html')
     # renders the 'registration.html' file stored in the templates directory
 
@@ -43,39 +52,75 @@ def login():
         crsr = cnxn.cursor()
         user = flask.request.form['username']
         pwd = flask.request.form['password']
+        
+        # check if business
         crsr.execute('SELECT password FROM businesses WHERE username=?', (user,))
         result = crsr.fetchone()
-        cnxn.close()
-        
         if result is not None and result[0] == pwd:
+            cnxn.close()
             flask.session['username'] = user
+            flask.session['usertype'] = 'bus'
             flask.flash('You were successfully logged in')
-            return flask.redirect(flask.url_for('index'))
-        else:
-            flask.flash('Login Failed')
-            return flask.redirect(flask.url_for('login'))
-        
-       
+            return flask.redirect(flask.url_for('bus_console'))
+
+        # check if beneficiary
+        crsr.execute('SELECT password FROM beneficiaries WHERE username=?', (user,))
+        result = crsr.fetchone()
+        if result is not None and result[0] == pwd:
+            cnxn.close()
+            flask.session['username'] = user
+            flask.session['usertype'] = 'ben'
+            flask.flash('You were successfully logged in')
+            return flask.redirect(flask.url_for('ben_console'))
+
+        cnxn.close()
+        flask.flash('Login Failed')
+        return flask.redirect(flask.url_for('login'))
         # fall through indicates login failed 
         # return 'failed login'
     else:
-        # GET Request, first check if the user is logged in already, redirect to index if so.
+        # GET Request, first check if the user is logged in already, redirect to console if so.
         # if not logged in then display the login form
         if 'username' in flask.session:
             flask.flash('You were already logged in')
-            return flask.redirect(flask.url_for('index'))
-        else:
-            return flask.render_template('login.html')
-    # renders the 'login.html' file stored in the templates directory
+            if flask.session['usertype'] == 'bus':
+                return flask.redirect(flask.url_for('bus_console'))
+            elif flask.session['usertype'] == 'ben':
+                return flask.redirect(flask.url_for('ben_console'))
 
-@app.route('/logout')
+        return flask.render_template('login.html')
+        # renders the 'login.html' file stored in the templates directory
+        
+#-------------------------------------------------------------------------------
+# logout route
+@app.route('/logout', methods=['GET']) # The acceptable HTTP methods for this
 def logout():
     # remove the username from the session if it's there
     flask.session.pop('username', None)
     flask.session.pop('userid', None)
+    flask.session.pop('usertype', None)
     flask.flash('You were successfully logged out')
     return flask.redirect(flask.url_for('index'))
 
+#-------------------------------------------------------------------------------
+# business console route
+@app.route('/bus_console', methods=['GET']) # The acceptable HTTP methods for this
+def bus_console():
+    if 'username' in flask.session:
+        if flask.session['usertype'] == 'bus':
+            return flask.render_template('bus_console.html')
+
+    return flask.redirect(flask.url_for('index'))
+
+#-------------------------------------------------------------------------------
+# beneficiary console route
+@app.route('/ben_console', methods=['GET']) # The acceptable HTTP methods for this
+def ben_console():
+    if 'username' in flask.session:
+        if flask.session['usertype'] == 'ben':
+            return flask.render_template('ben_console.html')
+
+    return flask.redirect(flask.url_for('index'))
 
 #-------------------------------------------------------------------------------
 # test it out by visting:  https://projectbgroup7dev-timbram.c9users.io/print_message/hello    

@@ -39,6 +39,8 @@
           <li {% if 'index' == active_page %} class="active"{% endif%}><a href="{{ url_for('index') }}">Home</a></li>
           <li {% if 'registration' == active_page %} class="active"{% endif%}><a href="{{ url_for('registration') }}">Registration</a></li>
           <li {% if 'login' == active_page %} class="active"{% endif%}><a href="{{ url_for('login') }}">Login</a></li>
+          <li {% if 'bus_console' == active_page %} class="active"{% endif%}><a href="{{ url_for('bus_console') }}">Console</a></li>
+          <li {% if 'ben_console' == active_page %} class="active"{% endif%}><a href="{{ url_for('ben_console') }}">Console</a></li>
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
       </div><!--/.nav-collapse -->
