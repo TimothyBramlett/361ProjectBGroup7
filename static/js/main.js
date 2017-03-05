@@ -51,12 +51,10 @@ $( document ).ready(function() {
     $('#bus_register_option').click(function() {
         $('#bus_register').removeClass('hidden');
         $('#ben_register').addClass('hidden');
-        $("#messages").html('');
     });
     
     $('#ben_register_option').click(function() {
         $('#bus_register').addClass('hidden');
         $('#ben_register').removeClass('hidden');
-        $("#messages").html('');
     });
 });

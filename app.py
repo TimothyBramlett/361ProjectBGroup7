@@ -52,7 +52,7 @@ def print_message(message):
     
 #-------------------------------------------------------------------------------
 # add one business to the database in table 'businesses'
-# https://projectbgroup7dev-timbram.c9users.io/register
+# https://projectbgroup7dev-timbram.c9users.io/bus_register
 # takes key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
 class BusRegister(Resource):
     def post(self):
@@ -102,7 +102,7 @@ api.add_resource(BusRegister, '/bus_register')
 
 #-------------------------------------------------------------------------------
 # add one beneficiary to the database in table 'beneficiaries'
-# https://projectbgroup7dev-timbram.c9users.io/register
+# https://projectbgroup7dev-timbram.c9users.io/ben_register
 # takes key/value pairs in POST (not in URL like GET) x-www-form-urlencoded
 class BenRegister(Resource):
     def post(self):
