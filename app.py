@@ -111,14 +111,31 @@ def logout():
 def bus_console():
     if 'username' in flask.session:
         if flask.session['usertype'] == 'bus':
-            if flask.request.method == 'POST':
+            # connect to the db
+            cnxn = sqlite3.connect(db_name)
+            crsr = cnxn.cursor()
+            
+            # get the business id
+            user = flask.session['username']
+            crsr.execute('SELECT id FROM businesses WHERE username=?', (user,))
+            userid = crsr.fetchone()
+            if userid is None:
+                cnxn.close()
+                return 'usernotfound', 403
+
+            #-------------------------------------------------------------------
+            if flask.request.method == 'GET':
+                # we need to somehow populate a list of all existing records for this business
+                i = 0 # junk code just to get it to run (need something under the IF STATEMENT)
+                
+            #-------------------------------------------------------------------
+            elif flask.request.method == 'POST':
                 inFil = flask.request.files['food_loss_csv_file']
                 if not inFil:
                     return 'filenotfound', 404
                 inStream = io.StringIO(inFil.stream.read().decode('UTF-8'))
                 csvData = csv.DictReader(inStream)
-                #print(csvData)
-                
+
                 #for row in csvData:
                     # check for valid rows
                     #----------------------
@@ -134,25 +151,11 @@ def bus_console():
                     # this print statement is just for debugging
                     #print(row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'])
 
-                # connect to the db
-                cnxn = sqlite3.connect(db_name)
-                crsr = cnxn.cursor()
-                
-                # get the business id
-                user = flask.session['username']
-                crsr.execute('SELECT id FROM businesses WHERE username=?', (user,))
-                userid = crsr.fetchone()
-                if userid is None:
-                    cnxn.close()
-                    return 'usernotfound', 403
-
                 inStream.seek(0)
                 insertData = []
                 for row in csvData:
                     rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
-                    #print(rowData)
                     insertData.append(rowData)
-                #print(insertData)
 
                 try:
                     crsr.executemany('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)', insertData)
@@ -162,7 +165,12 @@ def bus_console():
                     return err.args[0], 500
 
                 cnxn.close()
-                return 'success!', 200
+                return flask.render_template('bus_console.html')
+
+            #-------------------------------------------------------------------
+            else: # not GET or POST (can we even get here?)
+                cnxn.close()
+                
             return flask.render_template('bus_console.html')
     return flask.redirect(flask.url_for('index'))
 
