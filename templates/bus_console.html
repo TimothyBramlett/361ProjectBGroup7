@@ -4,5 +4,12 @@
 {% block container %}
   <div class="container">
     <h1>Business Console</h1>
+    <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="food_loss_csv_file">Food Loss csv File Input</label>
+        <input type="file" name="food_loss_csv_file" id="food_loss_csv_file">
+      </div>
+      <button id="food_loss_upload" type="submit" class="btn btn-primary">Submit</button>
+    </form>
   </div>
 {% endblock %}

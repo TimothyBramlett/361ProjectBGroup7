@@ -12,13 +12,12 @@ if os.path.exists(db_name):
 cnxn = sqlite3.connect(db_name)
 crsr = cnxn.cursor()
 
-
 crsr.execute('''CREATE TABLE businesses 
     (id INTEGER NOT NULL PRIMARY KEY, name text, addr text, city text, state text, zip text, username text, password text)''')
 crsr.execute('''CREATE TABLE beneficiaries
     (id INTEGER NOT NULL PRIMARY KEY, first text, last text, addr text, city text, state text, zip text, famsize int, username text, password text)''')
-crsr.execute('''CREATE TABLE f_loss 
-    (id INTEGER NOT NULL PRIMARY KEY, name text, units text, amount integer, bus_id integer, FOREIGN KEY (bus_id) REFERENCES businesses(id))''')
+crsr.execute('''CREATE TABLE foodlosses 
+    (id INTEGER NOT NULL PRIMARY KEY, name text, category text, volume real, units text, quantity integer, sellby text, bestby text, expiration text, bus_id integer, FOREIGN KEY (bus_id) REFERENCES businesses(id))''')
 
 # close the connection to the database
 cnxn.close()

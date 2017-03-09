@@ -4,6 +4,9 @@ from flask_restful import Resource, Api
 from json import dumps
 import sqlite3
 import sys
+import io
+import csv
+import sys
 
 # instantiates a Flask object named app
 # passing in the special variable __name__
@@ -104,12 +107,63 @@ def logout():
 
 #-------------------------------------------------------------------------------
 # business console route
-@app.route('/bus_console', methods=['GET']) # The acceptable HTTP methods for this
+@app.route('/bus_console', methods=['GET', 'POST']) # The acceptable HTTP methods for this
 def bus_console():
     if 'username' in flask.session:
         if flask.session['usertype'] == 'bus':
-            return flask.render_template('bus_console.html')
+            if flask.request.method == 'POST':
+                inFil = flask.request.files['food_loss_csv_file']
+                if not inFil:
+                    return 'filenotfound', 404
+                inStream = io.StringIO(inFil.stream.read().decode('UTF-8'))
+                csvData = csv.DictReader(inStream)
+                #print(csvData)
+                
+                #for row in csvData:
+                    # check for valid rows
+                    #----------------------
+                    # correct number of fields
+                    # units contains a real number
+                    # quantity contains an integer
+                    # sellby, bestby, and expiration have right format
+                    # name, category, units not empty
+                    
+                    # if any row found to be invalid
+                    #return 'invalidfile', 415
+                    
+                    # this print statement is just for debugging
+                    #print(row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'])
 
+                # connect to the db
+                cnxn = sqlite3.connect(db_name)
+                crsr = cnxn.cursor()
+                
+                # get the business id
+                user = flask.session['username']
+                crsr.execute('SELECT id FROM businesses WHERE username=?', (user,))
+                userid = crsr.fetchone()
+                if userid is None:
+                    cnxn.close()
+                    return 'usernotfound', 403
+
+                inStream.seek(0)
+                insertData = []
+                for row in csvData:
+                    rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
+                    #print(rowData)
+                    insertData.append(rowData)
+                #print(insertData)
+
+                try:
+                    crsr.executemany('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)', insertData)
+                    cnxn.commit()
+                except sqlite3.Error as err:
+                    cnxn.close()
+                    return err.args[0], 500
+
+                cnxn.close()
+                return 'success!', 200
+            return flask.render_template('bus_console.html')
     return flask.redirect(flask.url_for('index'))
 
 #-------------------------------------------------------------------------------
@@ -248,7 +302,7 @@ api.add_resource(BusList, '/bus_list')
 
 #-------------------------------------------------------------------------------
 # return list of business in database table 'businesses' (INCLUDING PASSWORDS)
-# https://projectbgroup7dev-timbram.c9users.io/bus_list
+# https://projectbgroup7dev-timbram.c9users.io/bus_list_with_pass
 # takes no parameters
 class BusListFull(Resource):     
     def get(self):
@@ -276,7 +330,7 @@ api.add_resource(BenList, '/ben_list')
 
 #-------------------------------------------------------------------------------
 # return list of beneficiaries in database table 'beneficiaries' (INCLUDING PASSWORDS)
-# https://projectbgroup7dev-timbram.c9users.io/bus_list
+# https://projectbgroup7dev-timbram.c9users.io/bus_list_with_pass
 # takes no parameters
 class BenListFull(Resource):     
     def get(self):
@@ -287,6 +341,20 @@ class BenListFull(Resource):
         cnxn.close()
         return result, 200
 api.add_resource(BenListFull, '/ben_list_with_pass')
+
+#-------------------------------------------------------------------------------
+# return list of items in database table 'foodlosses'
+# https://projectbgroup7dev-timbram.c9users.io/food_loss
+# takes no parameters
+class FoodLosses(Resource):     
+    def get(self):
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT * FROM foodlosses')
+        result = crsr.fetchall()
+        cnxn.close()
+        return result, 200
+api.add_resource(FoodLosses, '/food_loss')
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
