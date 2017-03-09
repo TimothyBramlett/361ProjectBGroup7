@@ -126,46 +126,76 @@ def bus_console():
             #-------------------------------------------------------------------
             if flask.request.method == 'GET':
                 # we need to somehow populate a list of all existing records for this business
-                i = 0 # junk code just to get it to run (need something under the IF STATEMENT)
+                pass #remove this when you add code to this section
                 
             #-------------------------------------------------------------------
             elif flask.request.method == 'POST':
-                inFil = flask.request.files['food_loss_csv_file']
-                if not inFil:
-                    return 'filenotfound', 404
-                inStream = io.StringIO(inFil.stream.read().decode('UTF-8'))
-                csvData = csv.DictReader(inStream)
+                
+                #---------------------------------------------------------------
+                if all (k in flask.request.form for k in ('name', 'category', 'volume', 'units', 'quantity', 'sellby', 'bestby', 'expiration')):
+                    # this is a POST request from the manual input
 
-                #for row in csvData:
-                    # check for valid rows
-                    #----------------------
-                    # correct number of fields
-                    # units contains a real number
-                    # quantity contains an integer
-                    # sellby, bestby, and expiration have right format
-                    # name, category, units not empty
+                    name = flask.request.form['name']
+                    category = flask.request.form['category']
+                    volume = flask.request.form['volume']
+                    units = flask.request.form['units']
+                    quantity = flask.request.form['quantity']
+                    sellby = flask.request.form['sellby']
+                    bestby = flask.request.form['bestby']
+                    expiration = flask.request.form['expiration']
+                    if (len(name) == 0 or len(category) == 0 or len(volume) == 0 or len(units) == 0):
+                        cnxn.close()
+                        return 'noblanksallowed', 400
+                    if (len(quantity) == 0 or len(sellby) == 0 or len(bestby) == 0 or len(expiration) == 0):
+                        cnxn.close()
+                        return 'noblanksallowed', 400
+                        
+                    # need to check for valid input formats
                     
-                    # if any row found to be invalid
-                    #return 'invalidfile', 415
-                    
-                    # this print statement is just for debugging
-                    #print(row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'])
-
-                inStream.seek(0)
-                insertData = []
-                for row in csvData:
-                    rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
-                    insertData.append(rowData)
-
-                try:
-                    crsr.executemany('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)', insertData)
+                    cnxn.execute('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)',
+                        (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id))
                     cnxn.commit()
-                except sqlite3.Error as err:
                     cnxn.close()
-                    return err.args[0], 500
-
-                cnxn.close()
-                return flask.render_template('bus_console.html')
+                    return 'success!', 200
+                
+                #---------------------------------------------------------------
+                else:
+                    # this is (assumed to be) a POST request from the CSV input
+                    inFil = flask.request.files['food_loss_csv_file']
+                    if not inFil:
+                        return 'filenotfound', 404
+                    inStream = io.StringIO(inFil.stream.read().decode('UTF-8'))
+                    csvData = csv.DictReader(inStream)
+    
+                    #for row in csvData:
+                        # check for valid rows
+                        #----------------------
+                        # correct number of fields
+                        # units contains a real number
+                        # quantity contains an integer
+                        # sellby, bestby, and expiration have right format
+                        # name, category, units not empty
+                        
+                        # if any row found to be invalid
+                        #return 'invalidfile', 415
+                        
+                        # this print statement is just for debugging
+                        #print(row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'])
+    
+                    inStream.seek(0)
+                    insertData = []
+                    for row in csvData:
+                        rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
+                        insertData.append(rowData)
+    
+                    try:
+                        crsr.executemany('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)', insertData)
+                        cnxn.commit()
+                    except sqlite3.Error as err:
+                        cnxn.close()
+                        return err.args[0], 500
+    
+                    cnxn.close()
 
             #-------------------------------------------------------------------
             else: # not GET or POST (can we even get here?)
@@ -198,6 +228,11 @@ class BusRegister(Resource):
     def post(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
+
+        if all (k in flask.request.form for k in ('name', 'addr', 'city', 'state', 'zip', 'username', 'password', 'confirm_password')):
+            pass # all the args are included in the POST request
+        else:
+            return 'missing arguments', 400
 
         name = flask.request.form['name']
         addr = flask.request.form['addr']
@@ -248,6 +283,11 @@ class BenRegister(Resource):
     def post(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
+
+        if all (k in flask.request.form for k in ('first', 'last', 'addr', 'city', 'state', 'zip', 'famsize', 'username', 'password', 'confirm_password')):
+            pass # all the args are included in the POST request
+        else:
+            return 'missing arguments', 400
 
         first = flask.request.form['first']
         last = flask.request.form['last']
