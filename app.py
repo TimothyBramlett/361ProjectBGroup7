@@ -213,9 +213,8 @@ def bus_console():
 
             #-------------------------------------------------------------------
             if flask.request.method == 'GET':
-                # we need to somehow populate a list of all existing records for this business
-                pass #remove this when you add code to this section
-                
+                pass
+
             #-------------------------------------------------------------------
             elif flask.request.method == 'POST':
                 
@@ -316,9 +315,14 @@ def bus_console():
 
                     inStream.seek(0)
                     insertData = []
+                    firstRow = True
                     for row in csvData:
+                        if firstRow:
+                            firstRow = False
+                            continue
                         #-------------------------------------------------------
                         # build list of tuples for insertion
+                        print(row)
                         rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
                         insertData.append(rowData)
     
@@ -535,9 +539,9 @@ api.add_resource(BenListFull, '/ben_list_with_pass')
 
 #-------------------------------------------------------------------------------
 # return list of items in database table 'foodlosses'
-# https://projectbgroup7dev-timbram.c9users.io/food_loss
+# https://projectbgroup7dev-timbram.c9users.io/food_loss_all
 # takes no parameters
-class FoodLosses(Resource):     
+class FoodLossesAll(Resource):     
     def get(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
@@ -545,7 +549,70 @@ class FoodLosses(Resource):
         result = crsr.fetchall()
         cnxn.close()
         return result, 200
+api.add_resource(FoodLossesAll, '/food_loss_all')
+
+#-------------------------------------------------------------------------------
+# return list of items in database table 'foodlosses' for a particular business
+# https://projectbgroup7dev-timbram.c9users.io/food_loss
+# takes no parameters
+class FoodLosses(Resource):     
+    def get(self):
+        if 'username' in flask.session:
+            # connect to the db
+            cnxn = sqlite3.connect(db_name)
+            crsr = cnxn.cursor()
+            
+            # get the business id
+            user = flask.session['username']
+            crsr.execute('SELECT id FROM businesses WHERE username=?', (user,))
+            bus_id = crsr.fetchone()
+            if bus_id is None:
+                bus_id = -1
+            print(bus_id)
+
+            crsr.execute('SELECT * FROM foodlosses WHERE bus_id=?', bus_id)
+            result = crsr.fetchall()
+            cnxn.close()
+            return result, 200
 api.add_resource(FoodLosses, '/food_loss')
+
+#-------------------------------------------------------------------------------
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
+# deletes item from database table (takes item id and table name)
+# https://projectbgroup7dev-timbram.c9users.io/delete_item_from_table
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
+class DeleteItem(Resource):
+    def post(self):
+        item_id = flask.request.form['item_id']
+        tablename = flask.request.form['tablename']
+
+        # connect to the db
+        cnxn = sqlite3.connect(db_name)
+        print('item_id=' + item_id)
+        cnxn.execute('DELETE FROM ' + tablename + ' WHERE id=?', (item_id,))
+        cnxn.commit()
+        cnxn.close()
+        return 'success!', 200
+api.add_resource(DeleteItem, '/delete_item_from_table')
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
+
+#-------------------------------------------------------------------------------
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
+# deletes all items from database table (takes table name)
+# https://projectbgroup7dev-timbram.c9users.io/delete_all_items_from_table
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
+class DeleteAllItems(Resource):
+    def post(self):
+        tablename = flask.request.form['tablename']
+
+        # connect to the db
+        cnxn = sqlite3.connect(db_name)
+        cnxn.execute('DELETE FROM ' + tablename)
+        cnxn.commit()
+        cnxn.close()
+        return 'success!', 200
+api.add_resource(DeleteAllItems, '/delete_all_items_from_table')
+# DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
