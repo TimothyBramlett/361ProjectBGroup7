@@ -4,5 +4,29 @@
 {% block container %}
   <div class="container">
     <h1>Beneficiary Console</h1>
+
+    <!--User Info Display ----------------------------------------------------->
+    <form id="ben_console" action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Account Information</legend>
+      <div class="form-group" id="ben-acct-info">
+        TODO
+      </div>
+      <button id="deactivated" type="submit" class="btn btn-primary" disabled>Update Information</button>
+      </fieldset>
+    </form>
+    <br></br>
+    
+    <!--Preferences ------------------------------------------>
+    <form id="preferences" action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Preferences and Nutritional Requirements</legend>
+      <div class="form-group">
+        TODO
+      </div>
+      </fieldset>
+    </form>
+    <br></br>
+    
   </div>
 {% endblock %}

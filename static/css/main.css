@@ -10,3 +10,13 @@ body {
 #flash_messages {
     padding: 40px 15px;
 }
+
+#ben-acct-info
+{
+  white-space:pre-wrap;
+}
+
+#bus-acct-info
+{
+  white-space:pre-wrap;
+}

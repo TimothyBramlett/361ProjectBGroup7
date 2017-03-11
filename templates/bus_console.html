@@ -6,13 +6,22 @@
     <h1>Business Console</h1>
 
     <!--User Info Display ----------------------------------------------------->
-
+    <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Account Information</legend>
+      <div class="form-group" id="bus-acct-info">
+        TODO
+      </div>
+      <button id="deactivated" type="submit" class="btn btn-primary" disabled>Update Information</button>
+      </fieldset>
+    </form>
+    <br></br>
+    
     <!--Multiple item addition via CSV ---------------------------------------->
     <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
       <fieldset>
       <legend>Multiple Item Addition (CSV File Upload)</legend>
       <div class="form-group">
-        <!--<label for="food_loss_csv_file">Food Loss csv File Input (we should put a file format description of may be a downloadable example for a proper file???)</label>-->
         <input type="file" name="food_loss_csv_file" id="food_loss_csv_file">
       </div>
       <button id="food_loss_upload" type="submit" class="btn btn-primary">Submit</button>
@@ -70,6 +79,18 @@
       <button type="submit" class="btn btn-primary">Submit</button>
       </fieldset>
     </form>
-
-    </div>
+    <br></br>
+    
+    <!--Inventory List (and actions) ------------------------------------------>
+    <form id="inventory" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Inventory</legend>
+      <div class="form-group">
+        TODO
+      </div>
+      </fieldset>
+    </form>
+    <br></br>
+    
+  </div>
 {% endblock %}

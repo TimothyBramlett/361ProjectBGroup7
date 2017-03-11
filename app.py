@@ -500,6 +500,20 @@ class BusList(Resource):
 api.add_resource(BusList, '/bus_list')
 
 #-------------------------------------------------------------------------------
+# return particular business in database table 'business' for EXISTING SESSION
+# https://projectbgroup7dev-timbram.c9users.io/bus_info
+# takes no parameters
+class BusInfo(Resource):     
+    def get(self):
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT name,addr,city,state,zip FROM businesses WHERE username=?', flask.session['username'])
+        result = crsr.fetchone()
+        cnxn.close()
+        return result, 200
+api.add_resource(BusInfo, '/bus_info')
+
+#-------------------------------------------------------------------------------
 # return list of business in database table 'businesses' (INCLUDING PASSWORDS)
 # https://projectbgroup7dev-timbram.c9users.io/bus_list_with_pass
 # takes no parameters
@@ -526,6 +540,20 @@ class BenList(Resource):
         cnxn.close()
         return result, 200
 api.add_resource(BenList, '/ben_list')
+
+#-------------------------------------------------------------------------------
+# return particular beneficiarie in database table 'beneficiaries' for EXISTING SESSION
+# https://projectbgroup7dev-timbram.c9users.io/ben_info
+# takes no parameters
+class BenInfo(Resource):     
+    def get(self):
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT first,last,addr,city,state,zip,famsize FROM beneficiaries WHERE username=?', flask.session['username'])
+        result = crsr.fetchone()
+        cnxn.close()
+        return result, 200
+api.add_resource(BenInfo, '/ben_info')
 
 #-------------------------------------------------------------------------------
 # return list of beneficiaries in database table 'beneficiaries' (INCLUDING PASSWORDS)
@@ -627,7 +655,7 @@ if __name__ == '__main__':
     
     run_port = int(sys.argv[1]) # The second argument being passed to the script by the os
                                 # filename is first
-    app.run(host='0.0.0.0', debug=True, port=run_port)
+    app.run(host='0.0.0.0', debug=False, port=run_port)
     # with cloud9 we have to run the app on port 8080
 
 
