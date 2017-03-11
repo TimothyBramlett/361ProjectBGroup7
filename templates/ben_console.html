@@ -9,8 +9,31 @@
     <form id="ben_console" action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">
       <fieldset>
       <legend>Account Information</legend>
-      <div class="form-group" id="ben-acct-info">
-        TODO
+      <div class="form-group">
+        <table>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Street Addr</th>
+              <th>City</th>
+              <th>State</th>
+              <th>ZIP</th>
+              <th>Number in Household</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="fName"></td>
+              <td id="lName"></td>
+              <td id="addr"></td>
+              <td id="city"></td>
+              <td id="ST"></td>
+              <td id="zip"></td>
+              <td id="nHouse"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <button id="deactivated" type="submit" class="btn btn-primary" disabled>Update Information</button>
       </fieldset>

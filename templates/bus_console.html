@@ -9,8 +9,27 @@
     <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
       <fieldset>
       <legend>Account Information</legend>
-      <div class="form-group" id="bus-acct-info">
-        TODO
+      <div class="form-group">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Street Addr</th>
+              <th>City</th>
+              <th>State</th>
+              <th>ZIP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="name"></td>
+              <td id="addr"></td>
+              <td id="city"></td>
+              <td id="ST"></td>
+              <td id="zip"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <button id="deactivated" type="submit" class="btn btn-primary" disabled>Update Information</button>
       </fieldset>
@@ -86,7 +105,20 @@
       <fieldset>
       <legend>Inventory</legend>
       <div class="form-group">
-        TODO
+        <table id = "foodlosses">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Volume</th>
+              <th>Units</th>
+              <th>Quantity</th>
+              <th>Sell By</th>
+              <th>Best By</th>
+              <th>Expiration</th>
+            </tr>
+          </thead>
+        </table>
       </div>
       </fieldset>
     </form>

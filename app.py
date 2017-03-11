@@ -507,7 +507,7 @@ class BusInfo(Resource):
     def get(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
-        crsr.execute('SELECT name,addr,city,state,zip FROM businesses WHERE username=?', flask.session['username'])
+        crsr.execute('SELECT name,addr,city,state,zip FROM businesses WHERE username=?', (flask.session['username'],))
         result = crsr.fetchone()
         cnxn.close()
         return result, 200
@@ -549,7 +549,7 @@ class BenInfo(Resource):
     def get(self):
         cnxn = sqlite3.connect(db_name)
         crsr = cnxn.cursor()
-        crsr.execute('SELECT first,last,addr,city,state,zip,famsize FROM beneficiaries WHERE username=?', flask.session['username'])
+        crsr.execute('SELECT first,last,addr,city,state,zip,famsize FROM beneficiaries WHERE username=?', (flask.session['username'],))
         result = crsr.fetchone()
         cnxn.close()
         return result, 200
@@ -602,7 +602,7 @@ class FoodLosses(Resource):
                 bus_id = -1
             print(bus_id)
 
-            crsr.execute('SELECT * FROM foodlosses WHERE bus_id=?', bus_id)
+            crsr.execute('SELECT name, category, volume, units, quantity, sellby, bestby, expiration FROM foodlosses WHERE bus_id=?', bus_id)
             result = crsr.fetchall()
             cnxn.close()
             return result, 200
