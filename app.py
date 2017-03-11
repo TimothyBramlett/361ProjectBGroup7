@@ -206,8 +206,8 @@ def bus_console():
             # get the business id
             user = flask.session['username']
             crsr.execute('SELECT id FROM businesses WHERE username=?', (user,))
-            userid = crsr.fetchone()
-            if userid is None:
+            bus_id = crsr.fetchone()
+            if bus_id is None:
                 cnxn.close()
                 return 'usernotfound', 403
 
@@ -258,11 +258,15 @@ def bus_console():
                         cnxn.close()
                         return 'dates should be YYYY-MM-DD: ' + str(row), 400
                 
+                    # going to make sure this solves it.
+                    #bus_id = user
+                
                     cnxn.execute('INSERT INTO foodlosses (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id) VALUES (?,?,?,?,?,?,?,?,?)',
-                        (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id))
+                        (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id[0]))
                     cnxn.commit()
                     cnxn.close()
-                    return 'success!', 200
+                    flask.flash('Item Successfully added!')
+                    return flask.redirect(flask.url_for('bus_console'))
                 
                 #---------------------------------------------------------------
                 else:
@@ -323,7 +327,7 @@ def bus_console():
                         #-------------------------------------------------------
                         # build list of tuples for insertion
                         print(row)
-                        rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], userid[0])
+                        rowData = (row['name'], row['category'], row['volume'], row['units'], row['quantity'], row['sellby'], row['bestby'], row['expiration'], bus_id[0])
                         insertData.append(rowData)
     
                     try:
@@ -574,6 +578,8 @@ class FoodLosses(Resource):
             result = crsr.fetchall()
             cnxn.close()
             return result, 200
+        else: 
+            return 'You are not logged in', 401
 api.add_resource(FoodLosses, '/food_loss')
 
 #-------------------------------------------------------------------------------
@@ -621,7 +627,7 @@ if __name__ == '__main__':
     
     run_port = int(sys.argv[1]) # The second argument being passed to the script by the os
                                 # filename is first
-    app.run(host='0.0.0.0', debug=False, port=run_port)
+    app.run(host='0.0.0.0', debug=True, port=run_port)
     # with cloud9 we have to run the app on port 8080
 
 

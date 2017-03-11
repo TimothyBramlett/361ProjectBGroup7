@@ -14,7 +14,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Renton', 'state': 'WA', 'username': 'A-money', 'zip': '98058', 'name': "Cash's Bar", 'password': 'asdf1234', 'addr': '12000 SE Petrovitsky Rd', 'confirm_password': 'asdf1234'}
+    {'addr': '12000 SE Petrovitsky Rd', 'username': 'A-money', 'password': 'asdf1234', 'city': 'Renton', 'confirm_password': 'asdf1234', 'name': "Cash's Bar", 'zip': '98058', 'state': 'WA'}
 RESPONSE:
     <Response [200]>
     "success!"
@@ -23,7 +23,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Bellevue', 'state': 'WA', 'username': 'B-money', 'zip': '98005', 'name': "Cash's Grill", 'password': '56hjkl78', 'addr': '3040 118th Ave SE', 'confirm_password': '56hjkl78'}
+    {'addr': '3040 118th Ave SE', 'username': 'B-money', 'password': '56hjkl78', 'city': 'Bellevue', 'confirm_password': '56hjkl78', 'name': "Cash's Grill", 'zip': '98005', 'state': 'WA'}
 RESPONSE:
     <Response [200]>
     "success!"
@@ -32,7 +32,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [200]>
     "success!"
@@ -41,7 +41,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [409]>
     "usertaken"
@@ -68,7 +68,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': '', 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': '', 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -77,7 +77,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '', 'confirm_password': 'qwerty9876'}
+    {'addr': '', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -86,7 +86,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': '', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': '', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -95,7 +95,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': '', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': ''}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -104,7 +104,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -113,7 +113,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': '', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': '', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -122,7 +122,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': '', 'addr': '200 Roy Street', 'confirm_password': 'qwerty9876'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': '', 'city': 'Seattle', 'confirm_password': 'qwerty9876', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -131,7 +131,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': ''}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': '', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [400]>
     "noblanksallowed"
@@ -140,7 +140,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/bus_register
 POST DATA:
-    {'city': 'Seattle', 'state': 'WA', 'username': 'C-money', 'zip': '98109', 'name': "Cash's Pub", 'password': 'qwerty9876', 'addr': '200 Roy Street', 'confirm_password': 'mismatch'}
+    {'addr': '200 Roy Street', 'username': 'C-money', 'password': 'qwerty9876', 'city': 'Seattle', 'confirm_password': 'mismatch', 'name': "Cash's Pub", 'zip': '98109', 'state': 'WA'}
 RESPONSE:
     <Response [409]>
     "passmismatch"
@@ -161,7 +161,7 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/ben_register
 POST DATA:
-    {'city': 'Seattle', 'famsize': 4, 'addr': '1234 Street Name', 'username': 'pokemon', 'zip': '98012', 'state': 'WA', 'first': 'Cash', 'password': 'go', 'last': 'Stramel', 'confirm_password': 'go'}
+    {'famsize': 4, 'last': 'Stramel', 'addr': '1234 Street Name', 'username': 'pokemon', 'password': 'go', 'city': 'Seattle', 'confirm_password': 'go', 'zip': '98012', 'state': 'WA', 'first': 'Cash'}
 RESPONSE:
     <Response [200]>
     "success!"
@@ -170,10 +170,10 @@ RESPONSE:
 REQUEST:
     https://projectbgroup7dev-timbram.c9users.io:8080/ben_register
 POST DATA:
-    {'city': 'Brisbane', 'famsize': 2, 'addr': '1234 Street Name', 'username': 'godzilla', 'zip': '45673', 'state': 'AUS', 'first': 'Jeff', 'password': 'go', 'last': 'Mueller', 'confirm_password': 'go'}
+    {'famsize': 2, 'last': 'Mueller', 'addr': '1234 Street Name', 'username': 'godzilla', 'password': 'go', 'city': 'Brisbane', 'confirm_password': 'go', 'zip': '45673', 'state': 'AUS', 'first': 'Jeff'}
 RESPONSE:
-    <Response [200]>
-    "success!"
+    <Response [400]>
+    "invalidstate"
 
 ----------------------------------------------------------------
 REQUEST:
@@ -181,7 +181,6 @@ REQUEST:
 RESPONSE:
     <Response [200]>
     ['Cash', 'Stramel', '1234 Street Name', 'Seattle', 'WA', '98012', 4, 'pokemon']
-    ['Jeff', 'Mueller', '1234 Street Name', 'Brisbane', 'AUS', '45673', 2, 'godzilla']
 
 ----------------------------------------------------------------
 REQUEST:
@@ -189,5 +188,4 @@ REQUEST:
 RESPONSE:
     <Response [200]>
     [1, 'Cash', 'Stramel', '1234 Street Name', 'Seattle', 'WA', '98012', 4, 'pokemon', 'go']
-    [2, 'Jeff', 'Mueller', '1234 Street Name', 'Brisbane', 'AUS', '45673', 2, 'godzilla', 'go']
 

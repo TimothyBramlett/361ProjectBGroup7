@@ -4,12 +4,72 @@
 {% block container %}
   <div class="container">
     <h1>Business Console</h1>
+
+    <!--User Info Display ----------------------------------------------------->
+
+    <!--Multiple item addition via CSV ---------------------------------------->
     <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Multiple Item Addition (CSV File Upload)</legend>
       <div class="form-group">
-        <label for="food_loss_csv_file">Food Loss csv File Input</label>
+        <!--<label for="food_loss_csv_file">Food Loss csv File Input (we should put a file format description of may be a downloadable example for a proper file???)</label>-->
         <input type="file" name="food_loss_csv_file" id="food_loss_csv_file">
       </div>
       <button id="food_loss_upload" type="submit" class="btn btn-primary">Submit</button>
+      </fieldset>
     </form>
-  </div>
+    <br></br>
+    
+    <!--Manually add single items --------------------------------------------->
+    <!--'name', 'category', 'volume', 'units', 'quantity',   'sellby',   'bestby', 'expiration'-->
+    <!--  text,      text,    float,     text,    integer, YYYY-MM-DD, YYYY-MM-DD,   YYYY-MM-DD-->
+    <form class="form-horizontal" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Single Item Addition</legend>
+      <div class="form-group">
+      <label for="name" class="col-md-1 control-label">Name</label>
+        <div class="col-md-3">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Item Name">
+        </div>
+        <label for="category" class="col-md-1 control-label">Category</label>
+        <div class="col-md-3">
+          <input type="text" name="category" class="form-control" id="category" placeholder="Category">
+        </div>
+        <label for="volume" class="col-md-1 control-label">volume</label>
+        <div class="col-md-3">
+          <input type="number" step = "0.1" min = "0.1" name="volume" class="form-control" id="volume" placeholder="volume">
+        </div>
+      </div>
+  
+      <div class="form-group">
+      <label for="units" class="col-md-1 control-label">units</label>
+        <div class="col-md-3">
+          <input type="text" name="units" class="form-control" id="units" placeholder="units">
+        </div>
+        <label for="quantity" class="col-md-1 control-label">quantity</label>
+        <div class="col-md-3">
+          <input type="number" min = "1" name="quantity" class="form-control" id="quantity" placeholder="quantity">
+        </div>
+        <label for="sellby" class="col-md-1 control-label">sellby</label>
+        <div class="col-md-3">
+          <input type="date" name="sellby" class="form-control" id="sellby" placeholder="sellby">
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bestby" class="col-md-1 control-label">bestby</label>
+        <div class="col-md-3">
+          <input type="date" name="bestby" class="form-control" id="bestby" placeholder="bestby">
+        </div>
+        <label for="expiration" class="col-md-1 control-label">expiration</label>
+        <div class="col-md-3">
+          <input type="date" name="expiration" class="form-control" id="expiration" placeholder="expiration">
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Submit</button>
+      </fieldset>
+    </form>
+
+    </div>
 {% endblock %}
