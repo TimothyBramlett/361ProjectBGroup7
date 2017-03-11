@@ -265,7 +265,7 @@ def bus_console():
                         (name, category, volume, units, quantity, sellby, bestby, expiration, bus_id[0]))
                     cnxn.commit()
                     cnxn.close()
-                    flask.flash('Item Successfully added!')
+                    #flask.flash('Item Successfully added!')
                     return flask.redirect(flask.url_for('bus_console'))
                 
                 #---------------------------------------------------------------

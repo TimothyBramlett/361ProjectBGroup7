@@ -67,6 +67,14 @@ function getFoodLoss() {
                     cell.innerHTML = response[i][j];
                     row.appendChild(cell);
                 }
+                cell = document.createElement('td');
+                button = '<input type="button" value="Update" class="btn btn-primary" disabled>';
+                cell.innerHTML = button;
+                row.appendChild(cell);
+                cell = document.createElement('td');
+                button = '<input type="button" value="Delete" class="btn btn-primary" disabled>';
+                cell.innerHTML = button;
+                row.appendChild(cell);
                 document.getElementById('foodlosses').appendChild(row);
             }
           }
