@@ -270,6 +270,7 @@ def bus_console():
                         flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
                         return flask.redirect(flask.url_for('bus_console'))
                     if (len(quantity) == 0 or len(sellby) == 0 or len(bestby) == 0 or len(expiration) == 0):
+                        cnxn.close()
                         flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
                         return flask.redirect(flask.url_for('bus_console'))
                         
