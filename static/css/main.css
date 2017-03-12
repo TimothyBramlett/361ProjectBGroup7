@@ -31,3 +31,7 @@ table, td, th {
   padding-bottom: 5px;  
   text-align: center;
 }
+
+legend {
+  border-color: #474956;
+}

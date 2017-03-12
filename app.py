@@ -656,7 +656,7 @@ if __name__ == '__main__':
     
     run_port = int(sys.argv[1]) # The second argument being passed to the script by the os
                                 # filename is first
-    app.run(host='0.0.0.0', debug=True, port=run_port)
+    app.run(host='0.0.0.0', debug=False, port=run_port)
     # with cloud9 we have to run the app on port 8080
 
 
