@@ -39,7 +39,9 @@
     <!--Multiple item addition via CSV ---------------------------------------->
     <form id="bus_console" action="{{ url_for('bus_console') }}" method ="POST" enctype="multipart/form-data">
       <fieldset>
-      <legend>Multiple Item Addition (CSV File Upload)</legend>
+      <legend>Multiple Item Addition Via CSV File Upload
+        <a href="http://web.engr.oregonstate.edu/~stramelm/CS361/food_loss_example.csv" title="example.csv">(Example CSV File)</a>
+      </legend>
       <div class="form-group">
         <input type="file" name="food_loss_csv_file" id="food_loss_csv_file">
       </div>
