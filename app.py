@@ -192,6 +192,40 @@ def dateIsValid(date):
         return False
 
     return True
+    
+#-------------------------------------------------------------------------------
+# validate that date1 is before date2
+# need to validate the date is valid first
+# (returns True if date1 is before or same as date 2, otherwise False)
+def dateBeforeDate(date1, date2):
+    dateRegex = re.compile(r'(\d\d\d\d)-(\d\d)-(\d\d)')
+    matchObj1 = dateRegex.search(date1)
+    matchObj2 = dateRegex.search(date2)
+    try:
+        dateOneYear = int(matchObj1.group(1))
+        dateOneMonth = int(matchObj1.group(2))
+        dateOneDay = int(matchObj1.group(3))
+        dateTwoYear = int(matchObj2.group(1))
+        dateTwoMonth = int(matchObj2.group(2))
+        dateTwoDay = int(matchObj2.group(3))
+        if dateOneYear > dateTwoYear:
+            return False
+        if dateOneYear < dateTwoYear:
+            return True
+        # if this far dateOneYear is equal to dateTwoYear
+        if dateOneMonth > dateTwoMonth:
+            return False
+        if dateOneMonth < dateTwoMonth:
+            return True
+        # if this far dateOneMonth is equal dateTwoMonth and years are equal
+        if dateOneDay > dateTwoDay:
+            return False
+        if dateOneDay <= dateTwoDay:
+            return True
+    except:
+        return False
+
+    return False
 
 #-------------------------------------------------------------------------------
 # business console route
@@ -233,30 +267,46 @@ def bus_console():
                     expiration = flask.request.form['expiration']
                     if (len(name) == 0 or len(category) == 0 or len(volume) == 0 or len(units) == 0):
                         cnxn.close()
-                        return 'noblanksallowed', 400
+                        flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
+                        return flask.redirect(flask.url_for('bus_console'))
                     if (len(quantity) == 0 or len(sellby) == 0 or len(bestby) == 0 or len(expiration) == 0):
-                        cnxn.close()
-                        return 'noblanksallowed', 400
+                        flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
+                        return flask.redirect(flask.url_for('bus_console'))
                         
                     if (not volumeIsValid(volume)):
                         cnxn.close()
-                        return 'volume<=0: ' + str(row), 400
+                        flask.flash('Volume must be greater than 0!')
+                        return flask.redirect(flask.url_for('bus_console'))
 
                     if (not quantityIsValid(quantity)):
                         cnxn.close()
-                        return 'non-int >0 quantity: ' + str(row), 400
+                        flask.flash('Quantity must be and integer and greater than 0!')
+                        return flask.redirect(flask.url_for('bus_console'))
 
                     if (not dateIsValid(sellby)):
                         cnxn.close()
-                        return 'dates should be YYYY-MM-DD: ' + str(row), 400
+                        flask.flash('Dates should be YYYY-MM-DD')
+                        return flask.redirect(flask.url_for('bus_console'))
 
                     if (not dateIsValid(bestby)):
                         cnxn.close()
-                        return 'dates should be YYYY-MM-DD: ' + str(row), 400
+                        flask.flash('Dates should be YYYY-MM-DD')
+                        return flask.redirect(flask.url_for('bus_console'))
 
                     if (not dateIsValid(expiration)):
                         cnxn.close()
-                        return 'dates should be YYYY-MM-DD: ' + str(row), 400
+                        flask.flash('Dates should be YYYY-MM-DD')
+                        return flask.redirect(flask.url_for('bus_console'))
+
+                    if (not dateBeforeDate(sellby,bestby)):
+                        cnxn.close()
+                        flask.flash('Sell by date should be on or before best by date')
+                        return flask.redirect(flask.url_for('bus_console'))
+                
+                    if (not dateBeforeDate(bestby,expiration)):
+                        cnxn.close()
+                        flask.flash('Best by date should be on or before expiration date')
+                        return flask.redirect(flask.url_for('bus_console'))
                 
                     # going to make sure this solves it.
                     #bus_id = user
@@ -281,41 +331,60 @@ def bus_console():
                         #-------------------------------------------------------
                         # validate in row of input data
                         if (len(row) != 8):
-                            return 'op cancelled - no rows added - invalid record found: ' + str(row), 415
+                            flask.flash('op cancelled - no rows added - invalid record found: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if all (k in row for k in ('name', 'category', 'volume', 'units', 'quantity', 'sellby', 'bestby', 'expiration')):
                             # all required fields were found
                             pass
                         else:
-                            return 'op cancelled - no rows added - invalid record found: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (len(row['name']) == 0 or len(row['category']) == 0 or len(row['volume']) == 0 or len(row['units']) == 0):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
                             
                         if (len(row['quantity']) == 0 or len(row['sellby']) == 0 or len(row['bestby']) == 0 or len(row['expiration']) == 0):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (not volumeIsValid(row['volume'])):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found - volume<=0: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found (Volume must be greater than zero): ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (not quantityIsValid(row['quantity'])):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found - non-int >0 quantity: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found (Quantity must be an integer and greater than zero): ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (not dateIsValid(row['sellby'])):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found - dates should be YYYY-MM-DD: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found (dates should be YYYY-MM-DD): ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (not dateIsValid(row['bestby'])):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found - dates should be YYYY-MM-DD: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found (dates should be YYYY-MM-DD): ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                         if (not dateIsValid(row['expiration'])):
                             cnxn.close()
-                            return 'op cancelled - no rows added - invalid record found - dates should be YYYY-MM-DD: ' + str(row), 415
+                            flask.flash('Operation canceled, No rows added, invalid record found (dates should be YYYY-MM-DD): ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
+                        
+                        if (not dateBeforeDate(row['sellby'],row['bestby'])):
+                            cnxn.close()
+                            flask.flash('Operation canceled, No rows added, Sell by date should be on or before best by date: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
+                
+                        if (not dateBeforeDate(row['bestby'],row['expiration'])):
+                            cnxn.close()
+                            flask.flash('Operation canceled, No rows added, Best by date should be on or before expiration date: ' + str(row))
+                            return flask.redirect(flask.url_for('bus_console'))
 
                     inStream.seek(0)
                     insertData = []
