@@ -602,7 +602,7 @@ class FoodLosses(Resource):
                 bus_id = -1
             print(bus_id)
 
-            crsr.execute('SELECT name, category, volume, units, quantity, sellby, bestby, expiration FROM foodlosses WHERE bus_id=?', bus_id)
+            crsr.execute('SELECT id, name, category, volume, units, quantity, sellby, bestby, expiration FROM foodlosses WHERE bus_id=?', bus_id)
             result = crsr.fetchall()
             cnxn.close()
             return result, 200
@@ -623,6 +623,7 @@ class DeleteItem(Resource):
         # connect to the db
         cnxn = sqlite3.connect(db_name)
         print('item_id=' + item_id)
+        print('tablename=' + tablename)
         cnxn.execute('DELETE FROM ' + tablename + ' WHERE id=?', (item_id,))
         cnxn.commit()
         cnxn.close()
@@ -655,7 +656,7 @@ if __name__ == '__main__':
     
     run_port = int(sys.argv[1]) # The second argument being passed to the script by the os
                                 # filename is first
-    app.run(host='0.0.0.0', debug=False, port=run_port)
+    app.run(host='0.0.0.0', debug=True, port=run_port)
     # with cloud9 we have to run the app on port 8080
 
 
