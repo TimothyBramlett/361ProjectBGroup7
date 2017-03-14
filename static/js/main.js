@@ -16,7 +16,7 @@ $( document ).ready(function() {
             type: request_method,
             data : form_data
         }).done(function(response) {
-            window.location.replace(originURL.concat("/login"));
+            window.location.replace(originURL.concat("/login?just_registered=1"));
         }).fail(function(response) {
             $('#messages').addClass('starter-template');
             $("#messages").html('<p class="bg-danger">' + response.responseText + '</p>');
@@ -40,7 +40,7 @@ $( document ).ready(function() {
             type: request_method,
             data : form_data
         }).done(function(response) {
-            window.location.replace(originURL.concat("/login"));
+            window.location.replace(originURL.concat("/login?just_registered=1"));
         }).fail(function(response) {
             $('#messages').addClass('starter-template');
             $("#messages").html('<p class="bg-danger">' + response.responseText + '</p>');

@@ -51,6 +51,9 @@
   </nav>
   <div class="container">
     <div id="messages">
+      {% if request.args.get('just_registered') %}
+        <h3 class="bg-success">You have registered successfully, you can now login</h3>
+      {% endif %}
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           <ul id="flash_messages">

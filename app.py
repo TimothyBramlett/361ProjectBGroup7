@@ -268,46 +268,47 @@ def bus_console():
                     if (len(name) == 0 or len(category) == 0 or len(volume) == 0 or len(units) == 0):
                         cnxn.close()
                         flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
+
                     if (len(quantity) == 0 or len(sellby) == 0 or len(bestby) == 0 or len(expiration) == 0):
                         cnxn.close()
                         flask.flash('All fields must be filled in. Sorry, no blanks allowed!')
-                        return flask.redirect(flask.url_for('bus_console'))
-                        
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
+
                     if (not volumeIsValid(volume)):
                         cnxn.close()
                         flask.flash('Volume must be greater than 0!')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
 
                     if (not quantityIsValid(quantity)):
                         cnxn.close()
                         flask.flash('Quantity must be and integer and greater than 0!')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
 
                     if (not dateIsValid(sellby)):
                         cnxn.close()
                         flask.flash('Dates should be YYYY-MM-DD')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
 
                     if (not dateIsValid(bestby)):
                         cnxn.close()
                         flask.flash('Dates should be YYYY-MM-DD')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
 
                     if (not dateIsValid(expiration)):
                         cnxn.close()
                         flask.flash('Dates should be YYYY-MM-DD')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
 
                     if (not dateBeforeDate(sellby,bestby)):
                         cnxn.close()
                         flask.flash('Sell by date should be on or before best by date')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
                 
                     if (not dateBeforeDate(bestby,expiration)):
                         cnxn.close()
                         flask.flash('Best by date should be on or before expiration date')
-                        return flask.redirect(flask.url_for('bus_console'))
+                        return flask.redirect(flask.url_for('bus_console', form_name = name, form_category = category, form_volume = volume, form_units = units, form_quantity = quantity, form_sellby = sellby, form_bestby = bestby, form_expiration = expiration))
                 
                     # going to make sure this solves it.
                     #bus_id = user

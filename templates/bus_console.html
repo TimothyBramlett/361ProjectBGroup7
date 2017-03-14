@@ -59,41 +59,41 @@
       <div class="form-group">
       <label for="name" class="col-md-1 control-label">Name</label>
         <div class="col-md-3">
-          <input type="text" name="name" class="form-control" id="name" placeholder="Item Name">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Item Name"  {% if request.args.get('form_name') %} value='{{ request.args.get('form_name') }}' {% endif %}>
         </div>
         <label for="category" class="col-md-1 control-label">Category</label>
         <div class="col-md-3">
-          <input type="text" name="category" class="form-control" id="category" placeholder="Category">
+          <input type="text" name="category" class="form-control" id="category" placeholder="Category" {% if request.args.get('form_category') %} value='{{ request.args.get('form_category') }}' {% endif %}>
         </div>
         <label for="quantity" class="col-md-1 control-label">Quantity</label>
         <div class="col-md-3">
-          <input type="number" min = "1" name="quantity" class="form-control" id="quantity" placeholder="16">
+          <input type="number" min = "1" name="quantity" class="form-control" id="quantity" placeholder="16" {% if request.args.get('form_quantity') %} value='{{ request.args.get('form_quantity') }}' {% endif %}>
         </div>
       </div>
   
       <div class="form-group">
         <label for="volume" class="col-md-1 control-label">Volume</label>
         <div class="col-md-3">
-          <input type="number" step = "0.1" min = "0.1" name="volume" class="form-control" id="volume" placeholder="3.2">
+          <input type="number" step = "0.1" min = "0.1" name="volume" class="form-control" id="volume" placeholder="3.2" {% if request.args.get('form_volume') %} value='{{ request.args.get('form_volume') }}' {% endif %}>
         </div>
         <label for="units" class="col-md-1 control-label">Units</label>
         <div class="col-md-3">
-          <input type="text" name="units" class="form-control" id="units" placeholder="oz">
+          <input type="text" name="units" class="form-control" id="units" placeholder="oz" {% if request.args.get('form_units') %} value='{{ request.args.get('form_units') }}' {% endif %}>
         </div>
       </div>
   
       <div class="form-group">
         <label for="sellby" class="col-md-1 control-label">Sell By</label>
         <div class="col-md-3">
-          <input type="text" name="sellby" class="form-control" id="sellby" placeholder="YYYY-MM-DD">
+          <input type="text" name="sellby" class="form-control" id="sellby" placeholder="YYYY-MM-DD" {% if request.args.get('form_sellby') %} value='{{ request.args.get('form_sellby') }}' {% endif %}>
         </div>
         <label for="bestby" class="col-md-1 control-label">Best By</label>
         <div class="col-md-3">
-          <input type="text" name="bestby" class="form-control" id="bestby" placeholder="YYYY-MM-DD">
+          <input type="text" name="bestby" class="form-control" id="bestby" placeholder="YYYY-MM-DD" {% if request.args.get('form_bestby') %} value='{{ request.args.get('form_bestby') }}' {% endif %}>
         </div>
         <label for="expiration" class="col-md-1 control-label">Expiration</label>
         <div class="col-md-3">
-          <input type="text" name="expiration" class="form-control" id="expiration" placeholder="YYYY-MM-DD">
+          <input type="text" name="expiration" class="form-control" id="expiration" placeholder="YYYY-MM-DD" {% if request.args.get('form_expiration') %} value='{{ request.args.get('form_expiration') }}' {% endif %}>
         </div>
       </div>
       
