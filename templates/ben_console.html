@@ -41,7 +41,7 @@
     <br></br>
     
     <!--Dietary Restrictions -------------------------------------------------->
-    <form id="diets" action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">
+    <form id="diets"> <!--</form>action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">-->
       <fieldset>
       <legend>Dietary Restrictions</legend>
       <div class="form-group">
@@ -60,39 +60,39 @@
           <tbody>
             <tr>
               <td>
-                <input type="checkbox" name="diets" value="Kosher"><br>
+                <input type="checkbox" name="diets" id="kosh" value="Kosher"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Gluten Free"><br>
+                <input type="checkbox" name="diets" id="glut" value="Gluten Free"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Vegan"><br>
+                <input type="checkbox" name="diets" id="vegan" value="Vegan"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Ovo-Vegetarian"><br>
+                <input type="checkbox" name="diets" id="ovoveg" value="Ovo-Vegetarian"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Lacto-Vegetarian"><br>
+                <input type="checkbox" name="diets" id="lactoveg" value="Lacto-Vegetarian"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Lacto-Ovo Vegetarians"><br>
+                <input type="checkbox" name="diets" id="lactoovoveg" value="Lacto-Ovo Vegetarian"><br>
               </td>
               <td>
-                <input type="checkbox" name="diets" value="Pescetarians"><br>
+                <input type="checkbox" name="diets" id="pesc" value="Pescetarian"><br>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button id="deactivated" type="submit" class="btn btn-primary" disabled>Save</button>
+      <!--<button id="deactivated" type="submit" class="btn btn-primary" disabled>Save</button>-->
       </fieldset>
     </form>
-    <br></br>
+    <!--<br></br>-->
     
     
     <!--Food Allergies -------------------------------------------------------->
     <!--https://www.foodallergy.org/about-food-allergies ---------------------->
-    <form id="allergies" action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">
+    <form id="allergies"> <!--action="{{ url_for('ben_console') }}" method ="POST" enctype="multipart/form-data">-->
       <fieldset>
       <legend>Food Allergies</legend>
       <div class="form-group">
@@ -113,40 +113,40 @@
           <tbody>
             <tr>
               <td>
-                <input type="checkbox" name="allergies" value="Peanut"><br>
+                <input type="checkbox" name="allergies" id="peanut" value="Peanut"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Tree Nuts"><br>
+                <input type="checkbox" name="allergies" id="tree" value="Tree Nuts"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Milk"><br>
+                <input type="checkbox" name="allergies" id="milk" value="Milk"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Egg"><br>
+                <input type="checkbox" name="allergies" id="egg" value="Egg"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Wheat"><br>
+                <input type="checkbox" name="allergies" id="wheat" value="Wheat"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Soy"><br>
+                <input type="checkbox" name="allergies" id="soy" value="Soy"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Fish"><br>
+                <input type="checkbox" name="allergies" id="fish" value="Fish"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Shellfish"><br>
+                <input type="checkbox" name="allergies" id="shellfish" value="Shellfish"><br>
               </td>
               <td>
-                <input type="checkbox" name="allergies" value="Sesame"><br>
+                <input type="checkbox" name="allergies" id="sesame" value="Sesame"><br>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button id="deactivated" type="submit" class="btn btn-primary" disabled>Save</button>
       </fieldset>
     </form>
-    <br></br>
-    
+
+    <button id="savePreferences" type="submit" class="btn btn-primary" onclick="savePreferences()">Save Dietary Restrictions and Food Allergies</button>
+
   </div>
 {% endblock %}

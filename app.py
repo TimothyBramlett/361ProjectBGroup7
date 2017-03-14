@@ -551,6 +551,11 @@ class BenRegister(Resource):
         cnxn.execute('INSERT INTO beneficiaries (first, last, addr, city, state, zip, famsize, username, password) VALUES (?,?,?,?,?,?,?,?,?)',
             (first, last, addr, city, state, zip, famsize, user, opas))
         cnxn.commit()
+        crsr.execute('SELECT id FROM beneficiaries WHERE username=?', (user,))
+        ben_id = crsr.fetchone()
+        cnxn.execute('INSERT INTO preferences (kosh, glut, vegan, ovoveg, lactoveg, lactoovoveg, pesc, peanut, tree, milk, egg, wheat, soy, fish, shellfish, sesame, ben_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ben_id[0]))
+        cnxn.commit()
         cnxn.close()
         return 'success!', 200
 api.add_resource(BenRegister, '/ben_register')
@@ -679,6 +684,96 @@ class FoodLosses(Resource):
         else: 
             return 'You are not logged in', 401
 api.add_resource(FoodLosses, '/food_loss')
+
+#-------------------------------------------------------------------------------
+# return list of items in database table 'preferences'
+# https://projectbgroup7dev-timbram.c9users.io/preferences_all
+# takes no parameters
+class PreferencesAll(Resource):     
+    def get(self):
+        cnxn = sqlite3.connect(db_name)
+        crsr = cnxn.cursor()
+        crsr.execute('SELECT * FROM preferences')
+        result = crsr.fetchall()
+        cnxn.close()
+        return result, 200
+api.add_resource(PreferencesAll, '/preferences_all')
+
+#-------------------------------------------------------------------------------
+# return list of items in database table 'preferences' for a particular beneficiary
+# https://projectbgroup7dev-timbram.c9users.io/preferences
+# takes no parameters
+class Preferences(Resource):     
+    def get(self):
+        if 'username' in flask.session:
+            # connect to the db
+            cnxn = sqlite3.connect(db_name)
+            crsr = cnxn.cursor()
+            
+            # get the beneficiary id
+            user = flask.session['username']
+            crsr.execute('SELECT id FROM beneficiaries WHERE username=?', (user,))
+            ben_id = crsr.fetchone()
+            if ben_id is None:
+                ben_id = -1
+
+            crsr.execute('SELECT kosh, glut, vegan, ovoveg, lactoveg, lactoovoveg, pesc, peanut, tree, milk, egg, wheat, soy, fish, shellfish, sesame FROM preferences WHERE ben_id=' + str(ben_id[0]))
+            result = crsr.fetchall()
+            cnxn.close()
+            return result, 200
+        else: 
+            return 'You are not logged in', 401
+api.add_resource(Preferences, '/preferences')
+
+#-------------------------------------------------------------------------------
+# updates record in database table 'preferences' for a particular beneficiary
+# https://projectbgroup7dev-timbram.c9users.io/save_preferences
+# takes no parameters
+class SavePreferences(Resource):     
+    def post(self):
+        if 'username' in flask.session:
+            # connect to the db
+            cnxn = sqlite3.connect(db_name)
+            crsr = cnxn.cursor()
+            
+            # get the beneficiary id
+            user = flask.session['username']
+            crsr.execute('SELECT id FROM beneficiaries WHERE username=?', (user,))
+            ben_id = crsr.fetchone()
+            if ben_id is None:
+                ben_id = -1
+            print("ben_id=" + str(ben_id[0]))
+
+            kosh = flask.request.form['kosh']
+            glut = flask.request.form['glut']
+            vegan = flask.request.form['vegan']
+            ovoveg = flask.request.form['ovoveg']
+            lactoveg = flask.request.form['lactoveg']
+            lactoovoveg = flask.request.form['lactoovoveg']
+            pesc = flask.request.form['pesc']
+            peanut = flask.request.form['peanut']
+            tree = flask.request.form['tree']
+            milk = flask.request.form['milk']
+            egg = flask.request.form['egg']
+            wheat = flask.request.form['wheat']
+            soy = flask.request.form['soy']
+            fish = flask.request.form['fish']
+            shellfish = flask.request.form['shellfish']
+            sesame = flask.request.form['sesame']
+
+            query = 'UPDATE preferences SET '
+            query += 'kosh=?, glut=?, vegan=?, ovoveg=?, lactoveg=?, lactoovoveg=?, pesc=?, '
+            query += 'peanut=?, tree=?, milk=?, egg=?, wheat=?, soy=?, fish=?, shellfish=?, sesame=? WHERE ben_id=?'
+            #print(query)
+            crsr.execute(query, (kosh, glut, vegan, ovoveg, lactoveg, lactoovoveg, pesc, peanut, tree, milk, egg, wheat, soy, fish, shellfish, sesame, ben_id[0]))
+            #crsr.execute('UPDATE preferences SET kosh=1 WHERE ben_id=1')
+            cnxn.commit()
+            #print(crsr.fetchall())
+            cnxn.close()
+            return 'success!', 200
+        else: 
+            return 'You are not logged in', 401
+api.add_resource(SavePreferences, '/save_preferences')
 
 #-------------------------------------------------------------------------------
 # DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER

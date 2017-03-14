@@ -1,6 +1,7 @@
 window.onload = function() {
     if (location.pathname === "/ben_console") {
          getBenAcctInfo();
+         getPreferences();
     }
     if (location.pathname === "/bus_console") {
          getBusAcctInfo();
@@ -30,6 +31,42 @@ function getBenAcctInfo() {
     };
     
     httpRequest.open('GET', location.origin.concat("/ben_info"));
+    httpRequest.send(null);
+}
+
+//------------------------------------------------------------------------------
+function getPreferences() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            var response = JSON.parse("[" + this.response + "]")[0];
+            response = response[0]
+            var tf = [false, true];
+            document.getElementById('kosh').checked  = tf[response[0]];
+            document.getElementById('glut').checked  = tf[response[1]];
+            document.getElementById('vegan').checked  = tf[response[2]];
+            document.getElementById('ovoveg').checked  = tf[response[3]];
+            document.getElementById('lactoveg').checked  = tf[response[4]];
+            document.getElementById('lactoovoveg').checked  = tf[response[5]];
+            document.getElementById('pesc').checked  = tf[response[6]];
+            document.getElementById('peanut').checked  = tf[response[7]];
+            document.getElementById('tree').checked  = tf[response[8]];
+            document.getElementById('milk').checked  = tf[response[9]];
+            document.getElementById('egg').checked  = tf[response[10]];
+            document.getElementById('wheat').checked  = tf[response[11]];
+            document.getElementById('soy').checked  = tf[response[12]];
+            document.getElementById('fish').checked  = tf[response[13]];
+            document.getElementById('shellfish').checked  = tf[response[14]];
+            document.getElementById('sesame').checked  = tf[response[15]];
+          }
+          else {
+            // display error
+          }
+        }
+    };
+    
+    httpRequest.open('GET', location.origin.concat("/preferences"));
     httpRequest.send(null);
 }
 
@@ -129,5 +166,41 @@ function deleteFoodLossItem(item_id) {
     httpRequest.open('POST', location.origin.concat("/delete_item_from_table"));
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     var params = 'item_id=' + item_id + '&tablename=foodlosses'
+    httpRequest.send(params);
+}
+
+//------------------------------------------------------------------------------
+function savePreferences() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            // it worked
+          }
+          else {
+            // display error
+          }
+        }
+    };
+    
+    httpRequest.open('POST', location.origin.concat("/save_preferences"));
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    var params = ''
+    if (!document.getElementById('kosh').checked) {params += "kosh=0&";} else {params += "kosh=1&";}
+    if (!document.getElementById('glut').checked) {params += "glut=0&";} else {params += "glut=1&";}
+    if (!document.getElementById('vegan').checked) {params += "vegan=0&";} else {params += "vegan=1&";}
+    if (!document.getElementById('ovoveg').checked) {params += "ovoveg=0&";} else {params += "ovoveg=1&";}
+    if (!document.getElementById('lactoveg').checked) {params += "lactoveg=0&";} else {params += "lactoveg=1&";}
+    if (!document.getElementById('lactoovoveg').checked) {params += "lactoovoveg=0&";} else {params += "lactoovoveg=1&";}
+    if (!document.getElementById('pesc').checked) {params += "pesc=0&";} else {params += "pesc=1&";}
+    if (!document.getElementById('peanut').checked) {params += "peanut=0&";} else {params += "peanut=1&";}
+    if (!document.getElementById('tree').checked) {params += "tree=0&";} else {params += "tree=1&";}
+    if (!document.getElementById('milk').checked) {params += "milk=0&";} else {params += "milk=1&";}
+    if (!document.getElementById('egg').checked) {params += "egg=0&";} else {params += "egg=1&";}
+    if (!document.getElementById('wheat').checked) {params += "wheat=0&";} else {params += "wheat=1&";}
+    if (!document.getElementById('soy').checked) {params += "soy=0&";} else {params += "soy=1&";}
+    if (!document.getElementById('fish').checked) {params += "fish=0&";} else {params += "fish=1&";}
+    if (!document.getElementById('shellfish').checked) {params += "shellfish=0&";} else {params += "shellfish=1&";}
+    if (!document.getElementById('sesame').checked) {params += "sesame=0";} else {params += "sesame=1";}
     httpRequest.send(params);
 }
