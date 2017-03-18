@@ -743,7 +743,6 @@ class SavePreferences(Resource):
             ben_id = crsr.fetchone()
             if ben_id is None:
                 ben_id = -1
-            print("ben_id=" + str(ben_id[0]))
 
             kosh = flask.request.form['kosh']
             glut = flask.request.form['glut']
@@ -765,11 +764,8 @@ class SavePreferences(Resource):
             query = 'UPDATE preferences SET '
             query += 'kosh=?, glut=?, vegan=?, ovoveg=?, lactoveg=?, lactoovoveg=?, pesc=?, '
             query += 'peanut=?, tree=?, milk=?, egg=?, wheat=?, soy=?, fish=?, shellfish=?, sesame=? WHERE ben_id=?'
-            #print(query)
             crsr.execute(query, (kosh, glut, vegan, ovoveg, lactoveg, lactoovoveg, pesc, peanut, tree, milk, egg, wheat, soy, fish, shellfish, sesame, ben_id[0]))
-            #crsr.execute('UPDATE preferences SET kosh=1 WHERE ben_id=1')
             cnxn.commit()
-            #print(crsr.fetchall())
             cnxn.close()
             return 'success!', 200
         else: 
